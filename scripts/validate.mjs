@@ -51,7 +51,7 @@ assert.match(read('llms-install.md'), /"type": "streamableHttp"/, 'llms-install.
 const TAGS = ['productivity', 'marketing', 'research', 'data', 'software', 'business', 'sales', 'finance', 'creative', 'memory', 'security', 'databases'];
 const ids = new Set();
 let entries = 0;
-for (const [dir, type] of [['mcps', 'mcp'], ['skills', 'skill']]) {
+for (const [dir, type] of [['mcps', 'mcp'], ['skills', 'skill'], ['plugins', 'plugin']]) {
   for (const slug of fs.readdirSync(path.join('marketplace', dir))) {
     const base = path.join('marketplace', dir, slug);
     const e = JSON.parse(read(path.join(base, 'entry.json')));
@@ -78,6 +78,9 @@ for (const [dir, type] of [['mcps', 'mcp'], ['skills', 'skill']]) {
       assert.deepEqual(e.install.args, ['adspirer', '--transport', 'http', c.mcp.url], at + 'install args must match connector.json');
       assert.equal(c.install.mcp, 'cline mcp install ' + e.install.args.join(' '), 'connector.json install.mcp');
       assert.ok(!e.install.args.some(a => /<[^>]+>/.test(a)), at + 'placeholder in install args');
+    } else if (type === 'plugin') {
+      assert.deepEqual(e.install.args, ['https://github.com/Adspirer/adspirer-cline'], at + 'install args');
+      assert.equal(c.install.plugin, 'cline plugin install ' + e.install.args.join(' '), 'connector.json install.plugin');
     } else {
       assert.deepEqual(e.install.args, ['Adspirer/adspirer-cline'], at + 'install args');
       assert.equal(c.install.skills, 'cline skill install ' + e.install.args.join(' '), 'connector.json install.skills');
@@ -85,7 +88,25 @@ for (const [dir, type] of [['mcps', 'mcp'], ['skills', 'skill']]) {
     entries++;
   }
 }
-assert.equal(entries, 2, 'expected one MCP entry and one skill entry');
+assert.equal(entries, 3, 'expected one MCP entry, one skill entry and one plugin entry');
+
+// Plugin: the checks in cline/plugins scripts/validate-plugins.mjs, plus the
+// MCP-and-skills-only scope that repository's maintainer enforces in review.
+const pdir = path.join('plugins', 'adspirer');
+const pkg = JSON.parse(read(path.join(pdir, 'package.json')));
+assert.equal(pkg.name, 'adspirer', 'plugin package name must equal its slug');
+assert.deepEqual(pkg.cline.plugins[0].capabilities, ['mcp', 'skills'], 'plugin capabilities');
+const entry = read(path.join(pdir, 'index.ts'));
+assert.ok(entry.includes(c.mcp.url) && entry.includes('"streamableHttp"'), 'plugin must register the hosted endpoint');
+assert.ok(!/registerTool|registerHook|registerRule|registerCommand/.test(entry), 'plugin must bundle MCP and skills only');
+assert.ok(fs.existsSync(path.join(pdir, 'README.md')), 'plugin README');
+for (const f of walk(pdir)) {
+  const t = read(f);
+  assert.ok(!t.includes('\u2014'), f + ': em dash (rejected by cline/plugins)');
+  if (f.endsWith('.md')) assert.ok(!/\*\*[^*\n][\s\S]*?\*\*/.test(t), f + ': markdown bold (rejected by cline/plugins)');
+}
+assert.deepEqual(fs.readdirSync(path.join(pdir, 'skills')).sort(), skills, 'plugin skills must match skills/');
+assert.deepEqual(JSON.parse(read('package.json')).cline.plugins[0].paths, ['./plugins/adspirer/index.ts'], 'root package.json plugin path');
 
 // Install commands and relative links in the docs must be right.
 for (const f of ['README.md', 'LISTING.md', 'llms-install.md']) {

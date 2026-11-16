@@ -8,6 +8,17 @@ built paused, every change is shown first and read back afterwards.
 
 ## Install
 
+**One step: the plugin.** It registers the MCP server and installs all 14 skills.
+
+```bash
+cline plugin install https://github.com/Adspirer/adspirer-cline
+```
+
+Then sign in when Cline opens Adspirer's page in your browser, and connect your ad accounts at
+https://adspirer.ai/connections. That's it.
+
+Or install the pieces separately:
+
 **1. Add the MCP server.** Nothing runs locally and there is no API key.
 
 ```bash
@@ -62,7 +73,8 @@ discover them at run time, not to guess.
 | [llms-install.md](llms-install.md) | Install and verify steps written for AI agents |
 | [rules/adspirer.md](rules/adspirer.md) | Always-on rules to copy into `.clinerules/` |
 | `skills/` | 14 Agent Skills (`SKILL.md` folders), installable with `cline skill install` |
-| [marketplace/](marketplace) | The Cline Marketplace entries for the MCP server and the skills |
+| [plugins/adspirer/](plugins/adspirer) | The Cline plugin: registers the MCP server and bundles the skills (built by `node scripts/build_plugin.mjs`) |
+| [marketplace/](marketplace) | The Cline Marketplace entries for the plugin, the MCP server and the skills |
 | [LISTING.md](LISTING.md) | Listing details and submission status |
 
 ## Skills
@@ -101,9 +113,10 @@ apply.
 ## Status
 
 Built from https://github.com/Adspirer/adspirer-cursor-plugin v1.0.3 on 2026-11-16. Client
-registration with Cline's sign-in redirect was checked against the live server on that date; the
-full install has not yet been run in Cline. Not yet listed in the Cline Marketplace. Run
-`node scripts/validate.mjs` after editing.
+registration with Cline's sign-in redirect was checked against the live server on that date. The
+plugin was installed with Cline CLI 3.0.74, which registered the server and loaded all 14 skills;
+the browser sign-in has not yet been run in Cline. Not yet listed in the Cline Marketplace. Run
+`npm run build` and `npm run validate` after editing.
 
 ## Support
 

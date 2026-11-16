@@ -57,6 +57,9 @@ empty for a new account). It is read-only and does not use the user's tool-call 
 
 ## Optional: skills
 
+To install the server and the skills together as one Cline plugin instead, run
+`cline plugin install https://github.com/Adspirer/adspirer-cline`.
+
 ```bash
 cline skill install Adspirer/adspirer-cline
 ```

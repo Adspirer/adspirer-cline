@@ -6,6 +6,7 @@
 | MCP server URL | `https://mcp.adspirer.com/mcp` |
 | Transport | Streamable HTTP |
 | Sign-in | OAuth 2.1 in the browser (dynamic client registration, PKCE); no API key |
+| Plugin (server and skills) | `cline plugin install https://github.com/Adspirer/adspirer-cline` |
 | Install | `cline mcp install adspirer --transport http https://mcp.adspirer.com/mcp` |
 | Skills | `cline skill install Adspirer/adspirer-cline` |
 | Category tags | `marketing`, `data` (server); `marketing`, `business` (skills) |
@@ -24,8 +25,18 @@ kept here, ready to copy:
 
 | Entry | Copy to |
 | --- | --- |
-| [marketplace/mcps/adspirer/](marketplace/mcps/adspirer) | `registry/mcps/adspirer/` |
+| [marketplace/plugins/adspirer/](marketplace/plugins/adspirer) | `registry/plugins/adspirer/` |
+| [marketplace/mcps/adspirer-mcp/](marketplace/mcps/adspirer-mcp) | `registry/mcps/adspirer-mcp/` |
 | [marketplace/skills/adspirer-ads-skills/](marketplace/skills/adspirer-ads-skills) | `registry/skills/adspirer-ads-skills/` |
+
+Ids are unique across types in the marketplace, so the plugin takes `adspirer` and the server
+entry is `adspirer-mcp` (the same split Cline used for Linear). The server is still installed
+under the name `adspirer`.
+
+The plugin itself is [plugins/adspirer/](plugins/adspirer), ready to copy to `plugins/adspirer/`
+in https://github.com/cline/plugins. It bundles MCP and skills only, which is the scope that
+repository accepts. If it is merged there, change the plugin entry's install args to
+`["adspirer"]`.
 
 `node scripts/validate.mjs` applies the same checks as the marketplace's own
 `npm run validate`, plus the schema limits its script does not enforce.

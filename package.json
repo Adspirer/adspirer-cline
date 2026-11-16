@@ -1,0 +1,25 @@
+{
+  "name": "adspirer-cline",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Adspirer for Cline: the Adspirer advertising MCP server and Adspirer ads skills.",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build_plugin.mjs",
+    "validate": "node scripts/build_plugin.mjs --check && node scripts/validate.mjs"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./plugins/adspirer/index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "skills"
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 {
   "$schema": "../../../schemas/mcp.schema.json",
-  "id": "adspirer",
+  "id": "adspirer-mcp",
   "type": "mcp",
   "name": "Adspirer",
   "tagline": "Analyze, launch and optimize ad campaigns on Google, Meta, TikTok, LinkedIn and Amazon",
