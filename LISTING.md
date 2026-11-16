@@ -49,4 +49,7 @@ repository accepts. If it is merged there, change the plugin entry's install arg
 
 ## Status
 
-Not yet submitted.
+Submitted 2026-11-16, awaiting review:
+
+- Marketplace entries (plugin, server, skills): https://github.com/cline/marketplace/pull/485
+- Plugin: https://github.com/cline/plugins/pull/240
